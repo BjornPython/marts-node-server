@@ -20,11 +20,11 @@ arts from around the world.
 
 const server = http.createServer((req, res) => {
     if (req.url === "/martial-arts") {
-        res.writeHead(200, {"Content-Type": "text/html"})
-        res.end(`<p>${martialArtsTxt}</p>`)
+        res.writeHead(200, {"Content-Type": "text/plain"})
+        res.end(martialArtsTxt)
     } else {
-        res.writeHead(200, {"Content-Type": "text/html"})
-        res.end(`<p>Hello World</p>`)
+        res.writeHead(200, {"Content-Type": "text/plain"})
+        res.end("Hello World")
     }
 })
 
