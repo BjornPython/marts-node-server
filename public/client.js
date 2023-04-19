@@ -14,8 +14,8 @@ fetch("/data").then(response => response.json()).then(data => {
       <h1>${parsedData[i].title}</h1>
       <p>${parsedData[i].description}</p>
       <div class="edit-container">
-      <p onclick="removeMart()">remove</p>
-      <p onclick="editMart()">edit</p>
+      <p onclick="removeMart(${parsedData[i].id})">remove</p>
+      <p onclick="editMart(${parsedData[i].id})">edit</p>
       </div>
     </div>
     `
@@ -34,10 +34,10 @@ const click123 = () => {
 
   
 
-const removeMart = () => {
-  console.log("REMOVING MART...");
+const removeMart = (id) => {
+  console.log("REMOVING MART WITH ID: ", id);
 }
 
-const editMart = () => {
-  console.log("EDITING MART...");
+const editMart = (id) => {
+  console.log("EDITING MART WITH ID: ", id);
 }
