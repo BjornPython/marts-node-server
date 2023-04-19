@@ -85,29 +85,38 @@ const editMart = (id) => {
 
   const mart = document.getElementById(id)
   const input = mart.querySelector("input")
+  const editBtn = mart.querySelector(".edit-container p:nth-child(2)")
   input.placeholder = "Update Description..."
-  if (input.style.display !== "block") {input.style.display = "block"} else {input.style.display = "none"}
+  if (input.style.display !== "block") {
+    input.style.display = "block"; 
+    editBtn.innerText = "cancel"
+  } 
+  else {input.style.display = "none"; editBtn.innerText = "edit"}
 
 
 }
 
 const saveEdit =  (id) => {
+
   const mart = document.getElementById(id)
   const pTag = mart.querySelector("p")
-  const inputVal = mart.querySelector("input").value
+  const title = mart.querySelector("h1").innerText
+  const input = mart.querySelector("input")
+  const newDesc = input.value
 
-  if (inputVal === "") {return}
+  if (newDesc === "") {return}
 
    fetch("/update", {
     method: 'PATCH', 
     headers: {'Content-Type': 'application/json'}, 
-    body: JSON.stringify({id})
+    body: JSON.stringify({id, title, newDesc})
   })
-
   .then(response => {
     if (response.status = 200) {
       // edit new mart
-      pTag.innerText = inputVal
+      pTag.innerText = newDesc
+      input.style.display = "none"
+      input.value = ""
     } else {
       // edit mart failed
     }
