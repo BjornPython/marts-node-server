@@ -39,6 +39,7 @@ const submitNewMart = () => {
 
 const removeMart = (id) => {
   console.log("REMOVING MART WITH ID: ", id);
+  
 }
 
 const editMart = (id) => {
