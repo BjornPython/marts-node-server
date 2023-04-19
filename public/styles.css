@@ -1,3 +1,16 @@
 .edit-container {
     /* display: none; */
 }
+
+.edit-container p {
+    cursor: pointer;
+    width: 60px;
+}
+
+.edit-container p:nth-child(1) {
+    color: red;
+}
+
+.edit-container p:nth-child(2) {
+    color: gray;
+}
