@@ -7,11 +7,12 @@ const script = fs.readFileSync("./public/client.js", "utf-8")
 
 const marts = fs.readFileSync("./public/marts.html", "utf-8")
 
+const martsData = fs.readFileSync("./public/marts.json", "utf-8")
+
 const server = http.createServer((req, res) => {
 
     // READ
     if (req.url === "/martial-arts") {
-        console.log("MARTIAL ARTS: ", marts);
         res.writeHead(200, {"Content-Type": "text/html"})
         res.end(marts)
     }   
@@ -19,6 +20,12 @@ const server = http.createServer((req, res) => {
     else if (req.url === "/client.js") {
         res.writeHead(200, {"Content-Type": "text/javascript"})
         res.end(script)
+    }
+
+    else if (req.url === "/data") {
+        res.writeHead(200, {"Content-Type": "application/json"})
+        console.log(JSON.stringify(martsData));
+        res.end(JSON.stringify(martsData))
     }
 
     else {
