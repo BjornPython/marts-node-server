@@ -10,12 +10,15 @@ fetch("/data").then(response => response.json()).then(data => {
   
   for (i=0; i<parsedData.length; i++) {
     contents += `
-    <div class="${parsedData[i].title}">
+    <div class="mart-ctr" id="${parsedData[i].id}">
       <h1>${parsedData[i].title}</h1>
       <p>${parsedData[i].description}</p>
+      <input/>
       <div class="edit-container">
       <p onclick="removeMart('${parsedData[i].id}')">remove</p>
       <p onclick="editMart('${parsedData[i].id}')">edit</p>
+      <p onclick="saveEdit('${parsedData[i].id}')">save</p>
+
       </div>
     </div>
     `
@@ -41,12 +44,14 @@ const submitNewMart = () => {
     // If success, add the martial art to DOM
     let martsContainer = document.getElementById("marts-container")
     martsContainer.innerHTML += `
-    <div class="${data.id}">
+    <div class="mart-ctr" id="${data.id}">
       <h1>${data.title}</h1>
       <p>${data.description}</p>
+      <input />
       <div class="edit-container">
         <p onclick="removeMart('${data.id}')">remove</p>
         <p onclick="editMart('${data.id}')">edit</p>
+        <p onclick="saveEdit('${data.id}')">save</p>
       </div>
     </div>
     `
@@ -65,9 +70,8 @@ const removeMart = (id) => {
   .then(response => {
     if (response.status = 200) {
       // delete mart
-      console.log("IN HERE");
-      const mart = document.getElementsByClassName(id)
-      mart[0].remove()
+      const mart = document.getElementById(id)
+      mart.remove()
     } else {
       // del mart failed
       console.log("DELETING FAILED...");
@@ -78,17 +82,35 @@ const removeMart = (id) => {
 
 const editMart = (id) => {
   console.log("EDITING MART WITH ID: ", id);
-  fetch("/update", {
+
+  const mart = document.getElementById(id)
+  const input = mart.querySelector("input")
+  input.placeholder = "Update Description..."
+  if (input.style.display !== "block") {input.style.display = "block"} else {input.style.display = "none"}
+
+
+}
+
+const saveEdit =  (id) => {
+  const mart = document.getElementById(id)
+  const pTag = mart.querySelector("p")
+  const inputVal = mart.querySelector("input").value
+
+  if (inputVal === "") {return}
+
+   fetch("/update", {
     method: 'PATCH', 
     headers: {'Content-Type': 'application/json'}, 
     body: JSON.stringify({id})
   })
+
   .then(response => {
     if (response.status = 200) {
       // edit new mart
-
+      pTag.innerText = inputVal
     } else {
       // edit mart failed
     }
   })
+  
 }
