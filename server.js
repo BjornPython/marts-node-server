@@ -1,6 +1,6 @@
 const http = require("http")
 const fs = require("fs")
-
+const uuid = require("uuid")
 const PORT = process.env.PORT || 3000
 
 const script = fs.readFileSync("./public/client.js", "utf-8")
@@ -44,9 +44,11 @@ const server = http.createServer((req, res) => {
             body += chunk.toString()
         })
         req.on('end', () => {
-            console.log(`Request body: ${body}`);
             // Handle the request here
-
+            const bodyData = JSON.parse(body)
+            const {title, description } = bodyData
+            const id = uuid.v4()
+            console.log("NEW MART: ", {title, description, id});
           });
     }   
 
