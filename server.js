@@ -30,7 +30,6 @@ const server = http.createServer((req, res) => {
         })
         req.on('end', () => {
             const formData = querystring.parse(body)
-            console.log("FORM DATA: ", formData);
             const {title, description} = formData
             const id = uuid.v4()
             const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
