@@ -2,6 +2,7 @@ const http = require("http")
 const fs = require("fs")
 const uuid = require("uuid")
 const PORT = process.env.PORT || 3000
+const querystring = require('querystring');
 
 const script = fs.readFileSync("./public/client.js", "utf-8")
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
@@ -16,15 +17,30 @@ const server = http.createServer((req, res) => {
     }   
 
     
-    else if (req.url === "/martial-arts/new" || req.method === "GET") {
+    else if (req.url === "/martial-arts/new" && req.method === "GET") {
         const form = fs.readFileSync("./public/newMart.html", "utf-8")
         res.writeHead(200, {"Content-Type": "text/html"})
         res.end(form)
     }   
     
-    else if (req.url === "/martial-arts/new" || req.method === "POST") {
-        console.log("HERE");
+    else if (req.url === "/martial-arts/new" && req.method === "POST") {
+        let body = ""
+        req.on("data", chunk => {
+            body += chunk.toString()
+        })
+        req.on('end', () => {
+            const formData = querystring.parse(body)
+            console.log("FORM DATA: ", formData);
+            const {title, description} = formData
+            const id = uuid.v4()
+            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
+            const newMart =  {title, description, id}
+            currentMarts.push(newMart)
+            fs.writeFileSync("./public/marts.json", JSON.stringify(currentMarts))
 
+            res.writeHead(200, {"Content-Type": "text/plain"})
+            res.end("FORMS RECEIVED")
+        })
     }   
 
 
@@ -48,7 +64,7 @@ const server = http.createServer((req, res) => {
     // FOR CRUDS
 
 
-    else if (req.url === "/create" || req.method === "POST") {
+    else if (req.url === "/create" && req.method === "POST") {
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
@@ -69,7 +85,7 @@ const server = http.createServer((req, res) => {
           });
     }   
 
-    else if (req.url === "/delete" || req.method === "DELETE") {
+    else if (req.url === "/delete" && req.method === "DELETE") {
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
@@ -88,7 +104,7 @@ const server = http.createServer((req, res) => {
           });
     }
 
-    else if (req.url === "/update" || req.method === "PATCH") {
+    else if (req.url === "/update" && req.method === "PATCH") {
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
