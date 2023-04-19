@@ -4,10 +4,7 @@ const uuid = require("uuid")
 const PORT = process.env.PORT || 3000
 
 const script = fs.readFileSync("./public/client.js", "utf-8")
-
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
-
-const martsData = fs.readFileSync("./public/marts.json", "utf-8")
 
 const server = http.createServer((req, res) => {
 
@@ -24,6 +21,7 @@ const server = http.createServer((req, res) => {
     }
 
     else if (req.url === "/data") {
+        const martsData = fs.readFileSync("./public/marts.json", "utf-8")
         res.writeHead(200, {"Content-Type": "application/json"})
         res.end(JSON.stringify(martsData))
     }
@@ -43,13 +41,10 @@ const server = http.createServer((req, res) => {
             body += chunk.toString()
         })
         req.on('end', () => {
-            // Handle the request here
             try {
-
                 const bodyData = JSON.parse(body)
                 const {title, description } = bodyData
                 const id = uuid.v4()
-
                 const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
                 const newMart =  {title, description, id}
                 currentMarts.push(newMart)
@@ -58,8 +53,6 @@ const server = http.createServer((req, res) => {
                 res.end(JSON.stringify(newMart))
 
             } catch (err) {res.statusCode = 400; res.end()}
-
-
           });
     }   
 
@@ -69,14 +62,16 @@ const server = http.createServer((req, res) => {
             body += chunk.toString()
         })
         req.on('end', () => {
-            // Handle the request here
-            const bodyData = JSON.parse(body)
-            const {id } = bodyData
-            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
-            const newMarts = currentMarts.filter((mart) => {return mart.id !== id})
-            fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
-            res.writeHead(200, {"Content-Type": "application/json"})
-            res.end(id)
+            try {
+                const bodyData = JSON.parse(body)
+                const {id } = bodyData
+                const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
+                const newMarts = currentMarts.filter((mart) => {return mart.id !== id})
+                fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
+                res.writeHead(200, {"Content-Type": "application/json"})
+                res.end(id) 
+            } catch (err) {res.statusCode = 400; res.end()}
+
           });
     }
 
@@ -86,17 +81,17 @@ const server = http.createServer((req, res) => {
             body += chunk.toString()
         })
         req.on('end', () => {
-
-            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
-            const bodyData = JSON.parse(body)
-            const {id,title, newDesc} = bodyData
-            const newMart = {id, title, description: newDesc}
-            console.log("NEW MART: ", newMart);
-            const newMarts = currentMarts.filter(mart => {return mart.id !== id})
-            newMarts.push(newMart)
-            fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
-            res.writeHead(200, {"Content-Type": "application/json"})
-            res.end()
+            try {
+                const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
+                const bodyData = JSON.parse(body)
+                const {id,title, newDesc} = bodyData
+                const newMart = {id, title, description: newDesc}
+                const newMarts = currentMarts.filter(mart => {return mart.id !== id})
+                newMarts.push(newMart)
+                fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
+                res.writeHead(200, {"Content-Type": "application/json"})
+                res.end()
+            } catch (err) {res.statusCode = 400; res.end()}
           });
     }
 
