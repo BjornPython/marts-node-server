@@ -14,3 +14,12 @@
 .edit-container p:nth-child(2) {
     color: gray;
 }
+
+.edit-container p:nth-child(3) {
+    color: green;
+}
+
+
+.mart-ctr input {
+    display: none;
+}
