@@ -14,6 +14,12 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, {"Content-Type": "text/html"})
         res.end(marts)
     }   
+    
+    else if (req.url === "/martial-arts/new") {
+        const form = fs.readFileSync("./public/newMart.html", "utf-8")
+        res.writeHead(200, {"Content-Type": "text/html"})
+        res.end(form)
+    }   
 
     else if (req.url === "/client.js") {
         res.writeHead(200, {"Content-Type": "text/javascript"})
