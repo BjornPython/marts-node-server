@@ -37,12 +37,22 @@ const submitNewMart = () => {
     method: 'POST', 
     headers: {'Content-Type': 'application/json'}, 
     body: JSON.stringify({title: title.value, description: description.value})
-  }).then(response => {
-    if (response.status = 200) {
-      // add new mart
-    } else {
-      // adding mart failed
-    }
+  })
+  .then(response => {if (response.status === 200) {return response.json()}})
+  .then(data => {
+    
+    let martsContainer = document.getElementById("marts-container")
+
+    martsContainer.innerHTML += `
+    <div class="${data.title}">
+      <h1>${data.title}</h1>
+      <p>${data.description}</p>
+      <div class="edit-container">
+        <p onclick="removeMart(${data.id})">remove</p>
+        <p onclick="editMart(${data.id})">edit</p>
+      </div>
+    </div>
+    `
   })
   }
 

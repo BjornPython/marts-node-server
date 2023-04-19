@@ -5,8 +5,6 @@ const PORT = process.env.PORT || 3000
 
 const script = fs.readFileSync("./public/client.js", "utf-8")
 
-const marts = fs.readFileSync("./public/marts.html", "utf-8")
-
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
 
 const martsData = fs.readFileSync("./public/marts.json", "utf-8")
@@ -15,6 +13,7 @@ const server = http.createServer((req, res) => {
 
     // READ
     if (req.url === "/martial-arts") {
+        const marts = fs.readFileSync("./public/marts.html", "utf-8")
         res.writeHead(200, {"Content-Type": "text/html"})
         res.end(marts)
     }   
@@ -45,10 +44,22 @@ const server = http.createServer((req, res) => {
         })
         req.on('end', () => {
             // Handle the request here
-            const bodyData = JSON.parse(body)
-            const {title, description } = bodyData
-            const id = uuid.v4()
-            console.log("NEW MART: ", {title, description, id});
+            try {
+
+                const bodyData = JSON.parse(body)
+                const {title, description } = bodyData
+                const id = uuid.v4()
+
+                const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
+                const newMart =  {title, description, id}
+                currentMarts.push(newMart)
+                fs.writeFileSync("./public/marts.json", JSON.stringify(currentMarts))
+                res.writeHead(200, {"Content-Type": "application/json"})
+                res.end(JSON.stringify(newMart))
+
+            } catch (err) {res.statusCode = 400; res.end()}
+
+
           });
     }   
 
