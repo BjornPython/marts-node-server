@@ -14,8 +14,8 @@ fetch("/data").then(response => response.json()).then(data => {
       <h1>${parsedData[i].title}</h1>
       <p>${parsedData[i].description}</p>
       <div class="edit-container">
-      <p onclick="removeMart(${parsedData[i].id})">remove</p>
-      <p onclick="editMart(${parsedData[i].id})">edit</p>
+      <p onclick="removeMart('${parsedData[i].id}')">remove</p>
+      <p onclick="editMart('${parsedData[i].id}')">edit</p>
       </div>
     </div>
     `
@@ -28,11 +28,9 @@ fetch("/data").then(response => response.json()).then(data => {
 
 
 const submitNewMart = () => {
-  console.log("IN CLICK");
   const title = document.getElementById("title")
   const description = document.getElementById("description")
 
-  console.log("FORMS: ", title.value, description.value);
   fetch("/create", {
     method: 'POST', 
     headers: {'Content-Type': 'application/json'}, 
@@ -40,16 +38,15 @@ const submitNewMart = () => {
   })
   .then(response => {if (response.status === 200) {return response.json()}})
   .then(data => {
-    
+    // If success, add the martial art to DOM
     let martsContainer = document.getElementById("marts-container")
-
     martsContainer.innerHTML += `
-    <div class="${data.title}">
+    <div class="${data.id}">
       <h1>${data.title}</h1>
       <p>${data.description}</p>
       <div class="edit-container">
-        <p onclick="removeMart(${data.id})">remove</p>
-        <p onclick="editMart(${data.id})">edit</p>
+        <p onclick="removeMart('${data.id}')">remove</p>
+        <p onclick="editMart('${data.id}')">edit</p>
       </div>
     </div>
     `
@@ -68,11 +65,16 @@ const removeMart = (id) => {
   .then(response => {
     if (response.status = 200) {
       // delete mart
+      console.log("IN HERE");
+      const mart = document.getElementsByClassName(id)
+      mart[0].remove()
     } else {
       // del mart failed
+      console.log("DELETING FAILED...");
     }
   })
 }
+
 
 const editMart = (id) => {
   console.log("EDITING MART WITH ID: ", id);
@@ -84,6 +86,7 @@ const editMart = (id) => {
   .then(response => {
     if (response.status = 200) {
       // edit new mart
+
     } else {
       // edit mart failed
     }

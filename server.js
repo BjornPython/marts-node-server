@@ -69,9 +69,14 @@ const server = http.createServer((req, res) => {
             body += chunk.toString()
         })
         req.on('end', () => {
-            console.log(`Request body: ${body}`);
             // Handle the request here
-
+            const bodyData = JSON.parse(body)
+            const {id } = bodyData
+            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
+            const newMarts = currentMarts.filter((mart) => {return mart.id !== id})
+            fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
+            res.writeHead(200, {"Content-Type": "application/json"})
+            res.end(id)
           });
     }
 
