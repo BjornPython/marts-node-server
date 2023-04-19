@@ -1,14 +1,29 @@
 const http = require("http")
+const fs = require("fs")
+
 const PORT = process.env.PORT || 3000
 
-const martialArts = require("./public/marts.json")
+const script = fs.readFileSync("./public/client.js", "utf-8")
+
+const marts = fs.readFileSync("./public/marts.html", "utf-8")
 
 const server = http.createServer((req, res) => {
+
+    // READ
     if (req.url === "/martial-arts") {
-        res.writeHead(200, {"Content-Type": "text/plain"})
-        res.end(JSON.stringify(martialArts))
-    } else {
-        res.writeHead(404, {"Content-Type": "text/plain"})
+        console.log("MARTIAL ARTS: ", marts);
+        res.writeHead(200, {"Content-Type": "text/html"})
+        res.end(marts)
+    } 
+
+    else if (req.url === "/client.js") {
+        console.log("SCRIPT: ", script);
+        res.writeHead(200, {"Content-Type": "text/javascript"})
+        res.end(script)
+    }
+
+    else {
+        res.writeHead(404, {"Content-Type": "text/html"})
         res.end("ERROR 404")
     }
 })
