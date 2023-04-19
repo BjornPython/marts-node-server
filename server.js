@@ -38,7 +38,7 @@ const server = http.createServer((req, res) => {
             currentMarts.push(newMart)
             fs.writeFileSync("./public/marts.json", JSON.stringify(currentMarts))
 
-            res.writeHead(200, {"Content-Type": "text/plain"})
+            res.writeHead(302, {"Location": "/martial-arts"})
             res.end("FORMS RECEIVED")
         })
     }   
