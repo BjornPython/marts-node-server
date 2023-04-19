@@ -6,14 +6,14 @@ const querystring = require('querystring');
 
 const script = fs.readFileSync("./public/client.js", "utf-8")
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
+const UI = fs.readFileSync("./public/marts.html", "utf-8")
 
 const server = http.createServer((req, res) => {
 
     // READ
     if (req.url === "/martial-arts" && req.method === "GET") {
-        const marts = fs.readFileSync("./public/marts.html", "utf-8")
         res.writeHead(200, { "Content-Type": "text/html" })
-        res.end(marts)
+        res.end(UI)
     }
 
 
@@ -23,42 +23,41 @@ const server = http.createServer((req, res) => {
             body += chunk.toString()
         })
         req.on('end', () => {
-            const formData = querystring.parse(body)
-            const { title, description } = formData
-            const id = uuid.v4()
-            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
-            const newMart = { title, description, id }
-            currentMarts.push(newMart)
-            fs.writeFileSync("./public/marts.json", JSON.stringify(currentMarts))
+            const formData = querystring.parse(body) // get form Data
+            const { title, description } = formData // destructure formData values
+            const id = uuid.v4() // Create id for new martial art
+            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8")) // Get The current martial arts.
+            const newMart = { title, description, id } // Define new martial art to be added.
+            currentMarts.push(newMart) // Push new martial art to marts.json file.
+            fs.writeFileSync("./public/marts.json", JSON.stringify(currentMarts)) // Update the marts.json file
 
-            res.writeHead(302, { "Location": "/martial-arts" })
-            res.end("FORMS RECEIVED")
+            // IF all is succesfull, return a status code 200
+            res.writeHead(200, { "Content-Type": "text/html" })
+            res.end(UI)
         })
     }
 
-
-
-
+    // Route for getting client.js file
     else if (req.url === "/client.js") {
         res.writeHead(200, { "Content-Type": "text/javascript" })
-        res.end(script)
+        res.end(script) // Send the script file
     }
 
+    // Route for getting currentData
     else if (req.url === "/data") {
-        const martsData = fs.readFileSync("./public/marts.json", "utf-8")
+        const currentData = fs.readFileSync("./public/marts.json", "utf-8")
         res.writeHead(200, { "Content-Type": "application/json" })
-        res.end(JSON.stringify(martsData))
+        res.end(JSON.stringify(currentData)) // send the current Data
     }
 
+    // Route for getting styles.css file
     else if (req.url === "/styles.css") {
         res.writeHead(200, { "Content-Type": "text/css" })
-        res.end(styles)
+        res.end(styles) // Send css styles
     }
 
 
     // FOR CRUDS
-
-
     else if (req.url === "/create" && req.method === "POST") {
         let body = ""
         req.on("data", chunk => {
