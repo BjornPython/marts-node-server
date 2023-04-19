@@ -7,6 +7,8 @@ const script = fs.readFileSync("./public/client.js", "utf-8")
 
 const marts = fs.readFileSync("./public/marts.html", "utf-8")
 
+const styles = fs.readFileSync("./public/styles.css", "utf-8")
+
 const martsData = fs.readFileSync("./public/marts.json", "utf-8")
 
 const server = http.createServer((req, res) => {
@@ -26,6 +28,11 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, {"Content-Type": "application/json"})
         console.log(JSON.stringify(martsData));
         res.end(JSON.stringify(martsData))
+    }
+
+    else if (req.url === "/styles.css") {
+        res.writeHead(200, {"Content-Type": "text/css"})
+        res.end(styles)
     }
 
     else {

@@ -9,10 +9,18 @@ fetch("/data").then(response => response.json()).then(data => {
 
   
   for (i=0; i<parsedData.length; i++) {
-    contents += `<h1>${parsedData[i].title}</h1><p>${parsedData[i].description}</p>`
+    contents += `
+    <div class="${parsedData[i].title}">
+      <h1>${parsedData[i].title}</h1>
+      <p>${parsedData[i].description}</p>
+      <div class="edit-container">
+      <p onclick="removeMart()">remove</p>
+      <p onclick="editMart()">edit</p>
+      </div>
+    </div>
+    `
   }
   console.log("contents", contents);
-
   martsContainer.innerHTML = contents
 
   });
@@ -25,3 +33,11 @@ const click123 = () => {
   }
 
   
+
+const removeMart = () => {
+  console.log("REMOVING MART...");
+}
+
+const editMart = () => {
+  console.log("EDITING MART...");
+}
