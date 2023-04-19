@@ -35,6 +35,18 @@ const server = http.createServer((req, res) => {
         res.end(styles)
     }
 
+    else if (req.url === "/create" || req.method === "POST") {
+        let body = ""
+        req.on("data", chunk => {
+            body += chunk.toString()
+        })
+        req.on('end', () => {
+            console.log(`Request body: ${body}`);
+            // Handle the request here
+          });
+        
+    }
+
     else {
         res.writeHead(404, {"Content-Type": "text/html"})
         res.end("ERROR 404")
