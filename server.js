@@ -26,7 +26,6 @@ const server = http.createServer((req, res) => {
 
     else if (req.url === "/data") {
         res.writeHead(200, {"Content-Type": "application/json"})
-        console.log(JSON.stringify(martsData));
         res.end(JSON.stringify(martsData))
     }
 
@@ -34,6 +33,10 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, {"Content-Type": "text/css"})
         res.end(styles)
     }
+
+
+    // FOR CRUDS
+
 
     else if (req.url === "/create" || req.method === "POST") {
         let body = ""
@@ -45,8 +48,31 @@ const server = http.createServer((req, res) => {
             // Handle the request here
 
           });
-        
     }   
+
+    else if (req.url === "/delete" || req.method === "DELETE") {
+        let body = ""
+        req.on("data", chunk => {
+            body += chunk.toString()
+        })
+        req.on('end', () => {
+            console.log(`Request body: ${body}`);
+            // Handle the request here
+
+          });
+    }
+
+    else if (req.url === "/update" || req.method === "PATCH") {
+        let body = ""
+        req.on("data", chunk => {
+            body += chunk.toString()
+        })
+        req.on('end', () => {
+            console.log(`Request body: ${body}`);
+            // Handle the request here
+            
+          });
+    }
 
     else {
         res.writeHead(404, {"Content-Type": "text/html"})

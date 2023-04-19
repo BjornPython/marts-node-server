@@ -33,15 +33,49 @@ const submitNewMart = () => {
   const description = document.getElementById("description")
 
   console.log("FORMS: ", title.value, description.value);
+  fetch("/create", {
+    method: 'POST', 
+    headers: {'Content-Type': 'application/json'}, 
+    body: JSON.stringify({title: title.value, description: description.value})
+  }).then(response => {
+    if (response.status = 200) {
+      // add new mart
+    } else {
+      // adding mart failed
+    }
+  })
   }
 
   
 
 const removeMart = (id) => {
   console.log("REMOVING MART WITH ID: ", id);
-  
+  fetch("/delete", {
+    method: 'DELETE', 
+    headers: {'Content-Type': 'application/json'}, 
+    body: JSON.stringify({id})
+  })
+  .then(response => {
+    if (response.status = 200) {
+      // delete mart
+    } else {
+      // del mart failed
+    }
+  })
 }
 
 const editMart = (id) => {
   console.log("EDITING MART WITH ID: ", id);
+  fetch("/update", {
+    method: 'PATCH', 
+    headers: {'Content-Type': 'application/json'}, 
+    body: JSON.stringify({id})
+  })
+  .then(response => {
+    if (response.status = 200) {
+      // edit new mart
+    } else {
+      // edit mart failed
+    }
+  })
 }
