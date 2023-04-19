@@ -43,9 +43,10 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             console.log(`Request body: ${body}`);
             // Handle the request here
+
           });
         
-    }
+    }   
 
     else {
         res.writeHead(404, {"Content-Type": "text/html"})

@@ -28,8 +28,11 @@ fetch("/data").then(response => response.json()).then(data => {
 
 
 const submitNewMart = () => {
-    console.log("IN CLICK");
-    console.log(window);
+  console.log("IN CLICK");
+  const title = document.getElementById("title")
+  const description = document.getElementById("description")
+
+  console.log("FORMS: ", title.value, description.value);
   }
 
   
