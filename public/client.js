@@ -27,7 +27,7 @@ fetch("/data").then(response => response.json()).then(data => {
 
 
 
-const click123 = () => {
+const submitNewMart = () => {
     console.log("IN CLICK");
     console.log(window);
   }
