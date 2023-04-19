@@ -14,10 +14,9 @@ const server = http.createServer((req, res) => {
         console.log("MARTIAL ARTS: ", marts);
         res.writeHead(200, {"Content-Type": "text/html"})
         res.end(marts)
-    } 
+    }   
 
     else if (req.url === "/client.js") {
-        console.log("SCRIPT: ", script);
         res.writeHead(200, {"Content-Type": "text/javascript"})
         res.end(script)
     }
