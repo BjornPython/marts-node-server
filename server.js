@@ -2,12 +2,10 @@ const http = require("http")
 const fs = require("fs")
 const uuid = require("uuid")
 const PORT = process.env.PORT || 3000
+const querystring = require('querystring');
 
 const script = fs.readFileSync("./public/client.js", "utf-8")
-
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
-
-const martsData = fs.readFileSync("./public/marts.json", "utf-8")
 
 const server = http.createServer((req, res) => {
 
@@ -18,12 +16,41 @@ const server = http.createServer((req, res) => {
         res.end(marts)
     }   
 
+    
+    else if (req.url === "/martial-arts/new" && req.method === "GET") {
+        const form = fs.readFileSync("./public/newMart.html", "utf-8")
+        res.writeHead(200, {"Content-Type": "text/html"})
+        res.end(form)
+    }   
+    
+    else if (req.url === "/martial-arts/new" && req.method === "POST") {
+        let body = ""
+        req.on("data", chunk => {
+            body += chunk.toString()
+        })
+        req.on('end', () => {
+            const formData = querystring.parse(body)
+            console.log("FORM DATA: ", formData);
+            const {title, description} = formData
+            const id = uuid.v4()
+            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
+            const newMart =  {title, description, id}
+            currentMarts.push(newMart)
+            fs.writeFileSync("./public/marts.json", JSON.stringify(currentMarts))
+
+            res.writeHead(200, {"Content-Type": "text/plain"})
+            res.end("FORMS RECEIVED")
+        })
+    }   
+
+
     else if (req.url === "/client.js") {
         res.writeHead(200, {"Content-Type": "text/javascript"})
         res.end(script)
     }
 
     else if (req.url === "/data") {
+        const martsData = fs.readFileSync("./public/marts.json", "utf-8")
         res.writeHead(200, {"Content-Type": "application/json"})
         res.end(JSON.stringify(martsData))
     }
@@ -37,19 +64,16 @@ const server = http.createServer((req, res) => {
     // FOR CRUDS
 
 
-    else if (req.url === "/create" || req.method === "POST") {
+    else if (req.url === "/create" && req.method === "POST") {
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
         })
         req.on('end', () => {
-            // Handle the request here
             try {
-
                 const bodyData = JSON.parse(body)
                 const {title, description } = bodyData
                 const id = uuid.v4()
-
                 const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
                 const newMart =  {title, description, id}
                 currentMarts.push(newMart)
@@ -58,45 +82,45 @@ const server = http.createServer((req, res) => {
                 res.end(JSON.stringify(newMart))
 
             } catch (err) {res.statusCode = 400; res.end()}
-
-
           });
     }   
 
-    else if (req.url === "/delete" || req.method === "DELETE") {
+    else if (req.url === "/delete" && req.method === "DELETE") {
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
         })
         req.on('end', () => {
-            // Handle the request here
-            const bodyData = JSON.parse(body)
-            const {id } = bodyData
-            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
-            const newMarts = currentMarts.filter((mart) => {return mart.id !== id})
-            fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
-            res.writeHead(200, {"Content-Type": "application/json"})
-            res.end(id)
+            try {
+                const bodyData = JSON.parse(body)
+                const {id } = bodyData
+                const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
+                const newMarts = currentMarts.filter((mart) => {return mart.id !== id})
+                fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
+                res.writeHead(200, {"Content-Type": "application/json"})
+                res.end(id) 
+            } catch (err) {res.statusCode = 400; res.end()}
+
           });
     }
 
-    else if (req.url === "/update" || req.method === "PATCH") {
+    else if (req.url === "/update" && req.method === "PATCH") {
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
         })
         req.on('end', () => {
-
-            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
-            const bodyData = JSON.parse(body)
-            const {id,title, newDesc} = bodyData
-            const newMart = {id, title, description: newDesc}
-            console.log("NEW MART: ", newMart);
-            const newMarts = currentMarts.filter(mart => {return mart.id !== id})
-            newMarts.push(newMart)
-            fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
-            res.writeHead(200, {"Content-Type": "application/json"})
-            res.end()
+            try {
+                const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
+                const bodyData = JSON.parse(body)
+                const {id,title, newDesc} = bodyData
+                const newMart = {id, title, description: newDesc}
+                const newMarts = currentMarts.filter(mart => {return mart.id !== id})
+                newMarts.push(newMart)
+                fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
+                res.writeHead(200, {"Content-Type": "application/json"})
+                res.end()
+            } catch (err) {res.statusCode = 400; res.end()}
           });
     }
 

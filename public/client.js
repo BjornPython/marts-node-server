@@ -4,7 +4,6 @@
 fetch("/data").then(response => response.json()).then(data => {
   const parsedData = JSON.parse(data)
   let martsContainer = document.getElementById("marts-container")
-  console.log("martsContainer",martsContainer);
   var contents = ""
 
   
@@ -23,7 +22,6 @@ fetch("/data").then(response => response.json()).then(data => {
     </div>
     `
   }
-  console.log("contents", contents);
   martsContainer.innerHTML = contents
 
   });
@@ -61,7 +59,6 @@ const submitNewMart = () => {
   
 
 const removeMart = (id) => {
-  console.log("REMOVING MART WITH ID: ", id);
   fetch("/delete", {
     method: 'DELETE', 
     headers: {'Content-Type': 'application/json'}, 
@@ -74,14 +71,12 @@ const removeMart = (id) => {
       mart.remove()
     } else {
       // del mart failed
-      console.log("DELETING FAILED...");
     }
   })
 }
 
 
 const editMart = (id) => {
-  console.log("EDITING MART WITH ID: ", id);
 
   const mart = document.getElementById(id)
   const input = mart.querySelector("input")
