@@ -39,10 +39,9 @@ const createMartialArt = async (title, description) => {
     return new Promise((resolve, reject) => {
         db.run(sql, [title, description], (err) => {
             if (err) { reject(err) }
-            resolve({ success: true })
+            resolve(true)
         })
     })
-
 }
 
 
@@ -76,8 +75,11 @@ const updateDescription = async (newDesc, id) => {
 const deleteMartialArt = async (id) => {
     if (!id) { throw new Error("no id") }
     const sql = `DELETE FROM marts WHERE id = ?`
-    db.run(sql, [id], (err) => {
-        if (err) { return console.error(err.message) }
+    return new Promise((resolve, reject) => {
+        db.run(sql, [id], (err) => {
+            if (err) { reject(err) }
+            resolve(true)
+        })
     })
 }
 

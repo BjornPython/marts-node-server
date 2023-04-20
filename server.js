@@ -8,7 +8,7 @@ const script = fs.readFileSync("./public/client.js", "utf-8")
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
 
-const { createMartialArt, getAllMartialArts } = require("./database.js")
+const { createMartialArt, getAllMartialArts, deleteMartialArt } = require("./database.js")
 
 const server = http.createServer(async (req, res) => {
 
@@ -20,7 +20,7 @@ const server = http.createServer(async (req, res) => {
 
 
     else if (req.url === "/martial-arts" && req.method === "POST") {
-        console.log("IN CREATE...");
+        console.log("CREATINGGGG//....");
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
@@ -37,44 +37,19 @@ const server = http.createServer(async (req, res) => {
 
         })
     }
-
-    // Route for getting client.js file
-    else if (req.url === "/client.js") {
-        res.writeHead(200, { "Content-Type": "text/javascript" })
-        res.end(script) // Send the script file
-    }
-
-    // Route for getting currentData
-    else if (req.url === "/data") {
-        const data = await getAllMartialArts()
-        console.log(typeof data);
-        res.writeHead(200, { "Content-Type": "application/json" })
-        res.end(JSON.stringify(data)) // send the current Data
-    }
-
-    // Route for getting styles.css file
-    else if (req.url === "/styles.css") {
-        res.writeHead(200, { "Content-Type": "text/css" })
-        res.end(styles) // Send css styles
-    }
-
-
     else if (req.url === "/delete" && req.method === "DELETE") {
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
         })
-        req.on('end', () => {
-            try {
-                const bodyData = JSON.parse(body)
-                const { id } = bodyData
-                const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
-                const newMarts = currentMarts.filter((mart) => { return mart.id !== id })
-                fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
+        req.on('end', async () => {
+            const bodyData = JSON.parse(body)
+            const { id } = bodyData
+            const success = await deleteMartialArt(id)
+            if (success) {
                 res.writeHead(200, { "Content-Type": "application/json" })
                 res.end(id)
-            } catch (err) { res.statusCode = 400; res.end() }
-
+            }
         });
     }
 
@@ -97,6 +72,28 @@ const server = http.createServer(async (req, res) => {
             } catch (err) { res.statusCode = 400; res.end() }
         });
     }
+
+    // Route for getting client.js file
+    else if (req.url === "/client.js") {
+        res.writeHead(200, { "Content-Type": "text/javascript" })
+        res.end(script) // Send the script file
+    }
+
+    // Route for getting currentData
+    else if (req.url === "/data") {
+        const data = await getAllMartialArts()
+        res.writeHead(200, { "Content-Type": "application/json" })
+        res.end(JSON.stringify(data)) // send the current Data
+    }
+
+    // Route for getting styles.css file
+    else if (req.url === "/styles.css") {
+        res.writeHead(200, { "Content-Type": "text/css" })
+        res.end(styles) // Send css styles
+    }
+
+
+
 
     else {
         res.writeHead(404, { "Content-Type": "text/html" })
