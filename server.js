@@ -8,7 +8,9 @@ const script = fs.readFileSync("./public/client.js", "utf-8")
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
 
-const server = http.createServer((req, res) => {
+const { getAllMartialArts } = require("./database.js")
+
+const server = http.createServer(async (req, res) => {
 
     // READ
     if (req.url === "/martial-arts" && req.method === "GET") {
@@ -46,9 +48,10 @@ const server = http.createServer((req, res) => {
 
     // Route for getting currentData
     else if (req.url === "/data") {
-        const currentData = fs.readFileSync("./public/marts.json", "utf-8")
+        const data = await getAllMartialArts()
+        console.log(typeof data);
         res.writeHead(200, { "Content-Type": "application/json" })
-        res.end(JSON.stringify(currentData)) // send the current Data
+        res.end(JSON.stringify(data)) // send the current Data
     }
 
     // Route for getting styles.css file

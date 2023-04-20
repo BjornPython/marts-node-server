@@ -48,11 +48,14 @@ const createMartialArt = async (title, description) => {
 // QUERY MARTIAL ARTS
 const getAllMartialArts = async () => {
     const sql = `SELECT * FROM marts`
-    db.all(sql, [], (err, rows) => {
-        if (err) { console.error(err.message) }
-        const data = rows
-        console.log("DATA: ", data);
-        return data
+    return new Promise((resolve, reject) => {
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(rows)
+            }
+        })
     })
 }
 

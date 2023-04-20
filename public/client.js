@@ -16,8 +16,8 @@ const displayMart = (data) => { // Returns a div that displays the martial art.
 
 // Fetches and displays the Initial data.
 fetch("/data").then(response => response.json()).then(data => {
-
-  const parsedData = JSON.parse(data)
+  console.log("TYOE: ", typeof data);
+  const parsedData = data
   let martsContainer = document.getElementById("marts-container")
   var contents = "" // All the martial arts.
 
