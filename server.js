@@ -8,7 +8,7 @@ const script = fs.readFileSync("./public/client.js", "utf-8")
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
 
-const { getAllMartialArts } = require("./database.js")
+const { createMartialArt, getAllMartialArts } = require("./database.js")
 
 const server = http.createServer(async (req, res) => {
 
@@ -25,18 +25,16 @@ const server = http.createServer(async (req, res) => {
         req.on("data", chunk => {
             body += chunk.toString()
         })
-        req.on('end', () => {
+        req.on('end', async () => {
             const formData = querystring.parse(body) // get form Data
             const { title, description } = formData // destructure formData values
-            const id = uuid.v4() // Create id for new martial art
-            const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8")) // Get The current martial arts.
-            const newMart = { title, description, id } // Define new martial art to be added.
-            currentMarts.push(newMart) // Push new martial art to marts.json file.
-            fs.writeFileSync("./public/marts.json", JSON.stringify(currentMarts)) // Update the marts.json file
-
+            const success = await createMartialArt(title, description)
             // IF all is succesfull, return a status code 200
-            res.writeHead(200, { "Content-Type": "text/html" })
-            res.end(UI)
+            if (success) {
+                res.writeHead(200, { "Content-Type": "text/html" })
+                res.end(UI)
+            }
+
         })
     }
 

@@ -36,10 +36,11 @@ const createMartialArt = async (title, description) => {
     if (!title || !description) { throw new Error("no title or description") }
 
     const sql = `INSERT INTO marts(title,description) VALUES (?,?)`
-
-    db.run(sql, [title, description], (err) => {
-        if (err) { return console.error(err.message) }
-
+    return new Promise((resolve, reject) => {
+        db.run(sql, [title, description], (err) => {
+            if (err) { reject(err) }
+            resolve({ success: true })
+        })
     })
 
 }
@@ -58,6 +59,7 @@ const getAllMartialArts = async () => {
         })
     })
 }
+
 
 
 // UPDATE
