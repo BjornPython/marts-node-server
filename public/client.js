@@ -79,13 +79,12 @@ const saveEdit = (id) => {
 
   const mart = document.getElementById(id)
   const pTag = mart.querySelector("p")
-  const title = mart.querySelector("h1").innerText
   const input = mart.querySelector("input")
   const newDesc = input.value
 
   if (newDesc === "") { return } // If input is empty, cancel update request
 
-  const body = JSON.stringify({ id, title, newDesc })
+  const body = JSON.stringify({ id, newDesc })
 
   fetch("/update", { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body }) // Call server to update
     .then(response => {

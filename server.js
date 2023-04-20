@@ -1,6 +1,5 @@
 const http = require("http")
 const fs = require("fs")
-const uuid = require("uuid")
 const PORT = process.env.PORT || 3000
 const querystring = require('querystring');
 
@@ -8,7 +7,7 @@ const script = fs.readFileSync("./public/client.js", "utf-8")
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
 
-const { createMartialArt, getAllMartialArts, deleteMartialArt } = require("./database.js")
+const { createMartialArt, getAllMartialArts, deleteMartialArt, updateDescription } = require("./database.js")
 
 const server = http.createServer(async (req, res) => {
 
@@ -58,18 +57,14 @@ const server = http.createServer(async (req, res) => {
         req.on("data", chunk => {
             body += chunk.toString()
         })
-        req.on('end', () => {
-            try {
-                const currentMarts = JSON.parse(fs.readFileSync("./public/marts.json", "utf-8"))
-                const bodyData = JSON.parse(body)
-                const { id, title, newDesc } = bodyData
-                const newMart = { id, title, description: newDesc }
-                const newMarts = currentMarts.filter(mart => { return mart.id !== id })
-                newMarts.push(newMart)
-                fs.writeFileSync("./public/marts.json", JSON.stringify(newMarts))
+        req.on('end', async () => {
+            const bodyData = JSON.parse(body)
+            const { id, newDesc } = bodyData
+            const success = await updateDescription(newDesc, id)
+            if (success) {
                 res.writeHead(200, { "Content-Type": "application/json" })
                 res.end()
-            } catch (err) { res.statusCode = 400; res.end() }
+            }
         });
     }
 

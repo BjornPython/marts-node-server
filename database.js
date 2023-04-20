@@ -65,9 +65,13 @@ const getAllMartialArts = async () => {
 const updateDescription = async (newDesc, id) => {
     if (!newDesc || !id) { throw new Error("No new Description or id") }
     const sql = `UPDATE marts SET description = ? WHERE id = ?`
-    db.run(sql, [newDesc, id], (err) => {
-        if (err) { return console.error(err.message) }
+    return new Promise((resolve, reject) => {
+        db.run(sql, [newDesc, id], (err) => {
+            if (err) { reject(err) }
+            resolve(true)
+        })
     })
+
 }
 
 
