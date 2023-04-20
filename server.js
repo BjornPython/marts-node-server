@@ -17,9 +17,7 @@ const server = http.createServer(async (req, res) => {
         res.end(UI)
     }
 
-
     else if (req.url === "/martial-arts" && req.method === "POST") {
-        console.log("CREATINGGGG//....");
         let body = ""
         req.on("data", chunk => {
             body += chunk.toString()
@@ -33,9 +31,9 @@ const server = http.createServer(async (req, res) => {
                 res.writeHead(200, { "Content-Type": "text/html" })
                 res.end(UI)
             }
-
         })
     }
+
     else if (req.url === "/delete" && req.method === "DELETE") {
         let body = ""
         req.on("data", chunk => {
@@ -86,9 +84,6 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200, { "Content-Type": "text/css" })
         res.end(styles) // Send css styles
     }
-
-
-
 
     else {
         res.writeHead(404, { "Content-Type": "text/html" })

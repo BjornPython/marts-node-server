@@ -1,5 +1,4 @@
 const displayMart = (data) => { // Returns a div that displays the martial art.
-  console.log("DATA: ", data);
   return `
   <div class="mart-ctr" id="${data.id}">
   <h1>${data.title}</h1>
@@ -16,13 +15,11 @@ const displayMart = (data) => { // Returns a div that displays the martial art.
 
 // Fetches and displays the Initial data.
 fetch("/data").then(response => response.json()).then(data => {
-  console.log("TYOE: ", typeof data);
   const parsedData = data
   let martsContainer = document.getElementById("marts-container")
   var contents = "" // All the martial arts.
 
   for (i = 0; i < parsedData.length; i++) {
-    console.log("DISPLAY: ", displayMart(parsedData[i]));
     contents += displayMart(parsedData[i])
   }
 
