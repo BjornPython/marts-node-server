@@ -1,10 +1,10 @@
 const knex = require("knex")
 
 // let sql;
-const sqlite3 = require("sqlite3").verbose()
+// const sqlite3 = require("sqlite3").verbose()
 
 
-// CONNECT TO MARTS DB
+// CONNECT TO MARTS DB WITH KNEX
 const db = knex({
     client: "sqlite3",
     connection: { filename: "./marts.db" }
@@ -13,14 +13,14 @@ const db = knex({
 
 const createMartialArt = async (title, description) => {
     if (!title || !description) { throw new Error("no title or description") }
-
 }
 
 
 // QUERY MARTIAL ARTS
 const getAllMartialArts = async () => {
-    const sql = `SELECT * FROM marts`
-
+    const marts = await db("marts")
+    console.log("MARTS: ", marts);
+    return marts
 }
 
 
