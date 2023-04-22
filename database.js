@@ -7,7 +7,8 @@ const knex = require("knex")
 // CONNECT TO MARTS DB WITH KNEX
 const db = knex({
     client: "sqlite3",
-    connection: { filename: "./marts.db" }
+    connection: { filename: "./marts.db" },
+    useNullAsDefault: true
 })
 
 
@@ -19,8 +20,7 @@ const createMartialArt = async (title, description) => {
 // QUERY MARTIAL ARTS
 const getAllMartialArts = async () => {
     const marts = await db("marts")
-    console.log("MARTS: ", marts);
-    return marts
+    if (marts) { return marts } else { throw new Error("Failed to get marts table") }
 }
 
 
@@ -28,7 +28,9 @@ const getAllMartialArts = async () => {
 // UPDATE
 const updateDescription = async (newDesc, id) => {
     if (!newDesc || !id) { throw new Error("No new Description or id") }
-
+    const update = await db("marts").insert({ id, description: newDesc }, ["id"]).onConflict("id").merge()
+    console.log("UPDATE RES: ", update);
+    if (update.length >= 1) { return true } else { return false }
 }
 
 
