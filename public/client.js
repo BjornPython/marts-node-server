@@ -1,5 +1,4 @@
 const displayMart = (data) => { // Returns a div that displays the martial art.
-  console.log("DATA: ", data);
   return `
   <div class="mart-ctr" id="${data.id}">
   <h1>${data.title}</h1>
@@ -16,13 +15,11 @@ const displayMart = (data) => { // Returns a div that displays the martial art.
 
 // Fetches and displays the Initial data.
 fetch("/data").then(response => response.json()).then(data => {
-
-  const parsedData = JSON.parse(data)
+  const parsedData = data
   let martsContainer = document.getElementById("marts-container")
   var contents = "" // All the martial arts.
 
   for (i = 0; i < parsedData.length; i++) {
-    console.log("DISPLAY: ", displayMart(parsedData[i]));
     contents += displayMart(parsedData[i])
   }
 
@@ -79,13 +76,12 @@ const saveEdit = (id) => {
 
   const mart = document.getElementById(id)
   const pTag = mart.querySelector("p")
-  const title = mart.querySelector("h1").innerText
   const input = mart.querySelector("input")
   const newDesc = input.value
 
   if (newDesc === "") { return } // If input is empty, cancel update request
 
-  const body = JSON.stringify({ id, title, newDesc })
+  const body = JSON.stringify({ id, newDesc })
 
   fetch("/update", { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body }) // Call server to update
     .then(response => {
