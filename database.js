@@ -14,6 +14,8 @@ const db = knex({
 
 const createMartialArt = async (title, description) => {
     if (!title || !description) { throw new Error("no title or description") }
+    const marts = await db("marts").insert({ title, description }, ["id"])
+    if (marts.length >= 1) { return true } else { return false }
 }
 
 
@@ -37,7 +39,6 @@ const updateDescription = async (newDesc, id) => {
 const deleteMartialArt = async (id) => {
     if (!id) { throw new Error("no id") }
     const deletedMart = await db("marts").where("id", id).del("id")
-    console.log("DELETED MART: ", deletedMart);
     if (deletedMart) { return true } else { return false }
 }
 
