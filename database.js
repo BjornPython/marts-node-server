@@ -29,7 +29,6 @@ const getAllMartialArts = async () => {
 const updateDescription = async (newDesc, id) => {
     if (!newDesc || !id) { throw new Error("No new Description or id") }
     const update = await db("marts").insert({ id, description: newDesc }, ["id"]).onConflict("id").merge()
-    console.log("UPDATE RES: ", update);
     if (update.length >= 1) { return true } else { return false }
 }
 
@@ -37,7 +36,9 @@ const updateDescription = async (newDesc, id) => {
 // DELETE
 const deleteMartialArt = async (id) => {
     if (!id) { throw new Error("no id") }
-
+    const deletedMart = await db("marts").where("id", id).del("id")
+    console.log("DELETED MART: ", deletedMart);
+    if (deletedMart) { return true } else { return false }
 }
 
 
