@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3000
 const script = fs.readFileSync("./public/client.js", "utf-8")
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
-const { handleUiRequest } = require("./routes/files.route.js")
+const { handleUiRequest, handleScriptRequest } = require("./routes/files.route.js")
 const { handleCreateRequest, handleReadRequest, handleUpdateRequest, handleDeleteRequest } = require("./routes/martial-arts.route.js")
 const server = http.createServer(async (req, res) => {
 
@@ -27,8 +27,7 @@ const server = http.createServer(async (req, res) => {
 
     // Route for getting client.js file
     else if (req.url === "/client.js") {
-        res.writeHead(200, { "Content-Type": "text/javascript" })
-        res.end(script) // Send the script file
+        handleScriptRequest(req, res)
     }
 
     // Route for getting currentData

@@ -8,5 +8,9 @@ const handleUiRequest = (req, res) => {
     res.end(UI)
 }
 
+const handleScriptRequest = (req, res) => {
+    res.writeHead(200, { "Content-Type": "text/javascript" })
+    res.end(script) // Send the script file  
+}
 
-module.exports = { handleUiRequest }
+module.exports = { handleUiRequest, handleScriptRequest }
