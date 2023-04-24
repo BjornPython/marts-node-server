@@ -1,9 +1,8 @@
-const { callCreateMartialArt } = require("../services/martial-art.service.js")
+const { callCreateMartialArt, callGetMartialArts } = require("../services/martial-art.service.js")
 
 const fs = require("fs")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
 const querystring = require('querystring');
-
 const handleCreateRequest = async (req, res) => {
     let body = ""
     req.on("data", chunk => {
@@ -31,5 +30,18 @@ const handleCreateRequest = async (req, res) => {
 }
 
 
+const handleReadRequest = async (req, res) => {
+    const martialArts = await callGetMartialArts()
 
-module.exports = { handleCreateRequest }
+    if (martialArts) {
+        res.writeHead(200, { "Content-Type": "application/json" })
+        res.end(JSON.stringify(martialArts)) // send the martial arts 
+    } else {
+        res.writeHead(400, { "Content-Type": "text/html" })
+        res.end("Failed to read Martial Art.")
+    }
+
+}
+
+
+module.exports = { handleCreateRequest, handleReadRequest }

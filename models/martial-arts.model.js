@@ -17,8 +17,8 @@ const createMartialArt = async (title, description) => {
 
 // QUERY MARTIAL ARTS
 const getAllMartialArts = async () => {
-    const marts = await db("marts")
-    if (marts) { return marts } else { throw new Error("Failed to get marts table") } // return true if query was succesful
+    const martialArts = await db("marts")
+    if (martialArts) { return martialArts } else { return false } // return true if query was succesful
 }
 
 

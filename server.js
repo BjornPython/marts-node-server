@@ -1,14 +1,13 @@
 const http = require("http")
 const fs = require("fs")
 const PORT = process.env.PORT || 3000
-const querystring = require('querystring');
 
 const script = fs.readFileSync("./public/client.js", "utf-8")
 const styles = fs.readFileSync("./public/styles.css", "utf-8")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
 
 const { createMartialArt, getAllMartialArts, deleteMartialArt, updateDescription } = require("./database.js")
-const { handleCreateRequest } = require("./routes/martial-arts.route.js")
+const { handleCreateRequest, handleReadRequest } = require("./routes/martial-arts.route.js")
 const server = http.createServer(async (req, res) => {
 
     // READ
@@ -61,9 +60,7 @@ const server = http.createServer(async (req, res) => {
 
     // Route for getting currentData
     else if (req.url === "/data") {
-        const data = await getAllMartialArts()
-        res.writeHead(200, { "Content-Type": "application/json" })
-        res.end(JSON.stringify(data)) // send the current Data
+        handleReadRequest(req, res)
     }
 
     // Route for getting styles.css file

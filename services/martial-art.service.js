@@ -5,6 +5,11 @@ const callCreateMartialArt = async (title, description) => {
     return success
 }
 
+const callGetMartialArts = async () => {
+    const martialArts = await getAllMartialArts()
+    return martialArts
+}
 
 
-module.exports = { callCreateMartialArt }
+
+module.exports = { callCreateMartialArt, callGetMartialArts }
