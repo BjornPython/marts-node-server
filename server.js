@@ -8,7 +8,7 @@ const styles = fs.readFileSync("./public/styles.css", "utf-8")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
 
 const { createMartialArt, getAllMartialArts, deleteMartialArt, updateDescription } = require("./database.js")
-
+const { callCreateMartialArt } = require("./services/martial-arts.js")
 const server = http.createServer(async (req, res) => {
 
     // READ
@@ -18,20 +18,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     else if (req.url === "/martial-arts" && req.method === "POST") {
-        let body = ""
-        req.on("data", chunk => {
-            body += chunk.toString()
-        })
-        req.on('end', async () => {
-            const formData = querystring.parse(body) // get form Data
-            const { title, description } = formData // destructure formData values
-            const success = await createMartialArt(title, description)
-            // IF all is succesfull, return a status code 200
-            if (success) {
-                res.writeHead(200, { "Content-Type": "text/html" })
-                res.end(UI)
-            }
-        })
+        callCreateMartialArt(req, res)
     }
 
     else if (req.url === "/delete" && req.method === "DELETE") {
