@@ -1,12 +1,10 @@
 const http = require("http")
-const fs = require("fs")
 const PORT = process.env.PORT || 3000
 
-const script = fs.readFileSync("./public/client.js", "utf-8")
-const styles = fs.readFileSync("./public/styles.css", "utf-8")
-const UI = fs.readFileSync("./public/marts.html", "utf-8")
 const { handleUiRequest, handleScriptRequest, handleStylesRequest, handlePageNotFound } = require("./routes/files.route.js")
 const { handleCreateRequest, handleReadRequest, handleUpdateRequest, handleDeleteRequest } = require("./routes/martial-arts.route.js")
+
+
 const server = http.createServer(async (req, res) => {
 
     // Route for serving html
