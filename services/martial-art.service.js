@@ -1,4 +1,4 @@
-const { createMartialArt, getAllMartialArts, deleteMartialArt, updateDescription } = require("../models/martial-arts.js")
+const { createMartialArt, getAllMartialArts, deleteMartialArt, updateDescription } = require("../models/martial-arts.model.js")
 const querystring = require('querystring');
 const fs = require("fs")
 

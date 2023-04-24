@@ -8,7 +8,7 @@ const styles = fs.readFileSync("./public/styles.css", "utf-8")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
 
 const { createMartialArt, getAllMartialArts, deleteMartialArt, updateDescription } = require("./database.js")
-const { callCreateMartialArt } = require("./services/martial-arts.js")
+const { callCreateMartialArt } = require("./services/martial-art.service.js")
 const server = http.createServer(async (req, res) => {
 
     // READ
