@@ -13,4 +13,9 @@ const handleScriptRequest = (req, res) => {
     res.end(script) // Send the script file  
 }
 
-module.exports = { handleUiRequest, handleScriptRequest }
+const handleStylesRequest = (req, res) => {
+    res.writeHead(200, { "Content-Type": "text/css" })
+    res.end(styles) // Send css styles
+}
+
+module.exports = { handleUiRequest, handleScriptRequest, handleStylesRequest }
