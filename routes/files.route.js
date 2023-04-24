@@ -18,4 +18,9 @@ const handleStylesRequest = (req, res) => {
     res.end(styles) // Send css styles
 }
 
-module.exports = { handleUiRequest, handleScriptRequest, handleStylesRequest }
+const handlePageNotFound = (req, res) => {
+    res.writeHead(404, { "Content-Type": "text/html" })
+    res.end("ERROR 404")
+}
+
+module.exports = { handleUiRequest, handleScriptRequest, handleStylesRequest, handlePageNotFound }
