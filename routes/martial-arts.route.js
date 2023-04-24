@@ -1,4 +1,4 @@
-const { callCreateMartialArt, callGetMartialArts, callUpdateMartialArt } = require("../services/martial-art.service.js")
+const { callCreateMartialArt, callGetMartialArts, callUpdateMartialArt, callDeleteMartialArt } = require("../services/martial-art.service.js")
 
 const fs = require("fs")
 const UI = fs.readFileSync("./public/marts.html", "utf-8")
@@ -60,5 +60,24 @@ const handleUpdateRequest = async (req, res) => {
     });
 }
 
+const handleDeleteRequest = async (req, res) => {
+    let body = ""
+    req.on("data", chunk => {
+        body += chunk.toString()
+    })
+    req.on('end', async () => {
+        const bodyData = JSON.parse(body)
+        const { id } = bodyData
+        const success = await callDeleteMartialArt(id)
+        if (success) {
+            res.writeHead(200, { "Content-Type": "application/json" })
+            res.end(id)
+        } else {
+            res.writeHead(400, { "Content-Type": "text/html" })
+            res.end("Failed to delete Martial Art.")
+        }
+    });
+}
 
-module.exports = { handleCreateRequest, handleReadRequest }
+
+module.exports = { handleCreateRequest, handleReadRequest, handleUpdateRequest, handleDeleteRequest }

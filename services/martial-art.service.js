@@ -15,4 +15,9 @@ const callUpdateMartialArt = async (newDesc, id) => {
     return success
 }
 
-module.exports = { callCreateMartialArt, callGetMartialArts, callUpdateMartialArt }
+const callDeleteMartialArt = async (id) => {
+    const success = await deleteMartialArt(id)
+    return success
+}
+
+module.exports = { callCreateMartialArt, callGetMartialArts, callUpdateMartialArt, callDeleteMartialArt }
