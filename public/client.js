@@ -73,8 +73,19 @@ const submitNewMart = (e) => { //Submit new martial art's form values.
 
 
 const removeMart = (id) => { // Requests a DELETE request to server
-  const body = JSON.stringify({ id })
-  fetch("/delete", { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body })
+
+  const query = `
+  mutation DeleteMartialArt($input: DeleteMartialArtInput) {
+    deleteMartialArt(input: $input) {
+      id
+    }
+  }
+  `
+
+  const body = JSON.stringify({ query, variables: { input: { id } } })
+
+
+  fetch("/graphql", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body })
     .then(response => {
       if (response.status = 200) {
         // delete mart from DOM if success

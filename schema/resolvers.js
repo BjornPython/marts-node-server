@@ -1,4 +1,4 @@
-const { getAllMartialArts, createMartialArt, updateDescription } = require("../models/martial-arts.model.js")
+const { getAllMartialArts, createMartialArt, updateDescription, deleteMartialArt } = require("../models/martial-arts.model.js")
 
 
 const root = {
@@ -18,8 +18,16 @@ const root = {
         console.log(id, description);
         const updated = await updateDescription(description, id);
         return updated
-    }
+    },
 
+
+    deleteMartialArt: async ({ input }) => {
+        console.log("IN DELETE RESOLVER");
+        const { id } = input
+        console.log("ID: ", id);
+        const deletedId = await deleteMartialArt(id)
+        return deletedId
+    }
 
 
 }

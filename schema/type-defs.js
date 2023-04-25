@@ -18,6 +18,10 @@ const schema = buildSchema(
         description: String!
     }
 
+    input DeleteMartialArtInput {
+        id: ID!
+    }
+
     type Query {
         hello: String
         martialArts: [MartialArt]
@@ -26,6 +30,7 @@ const schema = buildSchema(
     type Mutation {
         createMartialArt(input: CreateMartialArtInput): MartialArt 
         updateMartialArt(input: UpdateMartialArtInput): MartialArt
+        deleteMartialArt(input: DeleteMartialArtInput): MartialArt
     }
 
 
