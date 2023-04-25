@@ -46,9 +46,6 @@ const submitNewMart = (e) => { //Submit new martial art's form values.
   const title = document.getElementById("title").value
   const description = document.getElementById("description").value
 
-
-  console.log("TITLE DESC: ", title, description);
-
   const query = `mutation CreateMartialArt($input: CreateMartialArtInput) {
     createMartialArt(input: $input) {
       title
@@ -58,10 +55,8 @@ const submitNewMart = (e) => { //Submit new martial art's form values.
 
   const body = JSON.stringify({ query, variables: { input: { title, description } } })
 
-  console.log("BODY: ", body);
 
   fetch("/graphql", { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: "application/json" }, body })
-
     .then(response => response.json()) // Add martial art to DOM if success.
     .then(data => {
       const createdData = data.data.createMartialArt
@@ -81,9 +76,7 @@ const removeMart = (id) => { // Requests a DELETE request to server
     }
   }
   `
-
   const body = JSON.stringify({ query, variables: { input: { id } } })
-
 
   fetch("/graphql", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body })
     .then(response => {
@@ -148,26 +141,3 @@ const saveEdit = (id) => {
 
 }
 
-const sendgql = async () => {
-  console.log("EY");
-
-  const query = `
-    {
-      martialArts {
-        id
-        title
-        description
-      }
-    }
-  `;
-
-  const response = await fetch("/graphql", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query }),
-  });
-
-  const data = await response.json();
-
-  console.log("RES: ", data);
-};

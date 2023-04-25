@@ -13,7 +13,6 @@ const root = {
     },
 
     updateMartialArt: async ({ input }) => {
-        console.log("IN UPDATE RESOLVER");
         const { id, description } = input
         console.log(id, description);
         const updated = await updateDescription(description, id);
@@ -22,9 +21,7 @@ const root = {
 
 
     deleteMartialArt: async ({ input }) => {
-        console.log("IN DELETE RESOLVER");
         const { id } = input
-        console.log("ID: ", id);
         const deletedId = await deleteMartialArt(id)
         return deletedId
     }

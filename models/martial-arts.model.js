@@ -9,10 +9,8 @@ const db = knex({
 
 // ADD A MARTIAL ART
 const createMartialArt = async (title, description) => {
-    console.log("IN CREATE MARTIAL ART");
     if (!title || !description) { throw new Error("no title or description") }
     const marts = await db("marts").insert({ title, description }, ["id", "title", "description"])
-    console.log("MARTS: ", marts);
     if (marts.length >= 1) { return marts[0] } else { return false } // return true if create was succesful
 }
 
@@ -27,10 +25,8 @@ const getAllMartialArts = async () => {
 
 // UPDATE
 const updateDescription = async (newDesc, id) => {
-    console.log("IN UPDESC");
     if (!newDesc || !id) { throw new Error("No new Description or id") }
     const updated = await db("marts").insert({ id, description: newDesc }, ["id", "title", "description"]).onConflict("id").merge()
-    console.log("UPDATED: ", updated);
     if (updated.length >= 1) { return updated[0] } else { return false } // return true if update was succesful
 }
 
