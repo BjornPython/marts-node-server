@@ -11,12 +11,14 @@ const { root } = require("../schema/resolvers.js")
 const { graphql } = require("graphql")
 
 const handleGqlRequest = async (req, res) => {
+    console.log("IN GQL");
     let body = ""
     req.on("data", chunk => {
         body += chunk.toString()
     })
     req.on('end', async () => {
         const { query } = JSON.parse(body)
+        console.log("QUERY: ", query);
         const response = await graphql({
             schema,
             source: query,

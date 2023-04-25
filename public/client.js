@@ -14,18 +14,30 @@ const displayMart = (data) => { // Returns a div that displays the martial art.
 }
 
 // Fetches and displays the Initial data.
-fetch("/data").then(response => response.json()).then(data => {
-  const parsedData = data
-  let martsContainer = document.getElementById("marts-container")
-  var contents = "" // All the martial arts.
-
-  for (i = 0; i < parsedData.length; i++) {
-    contents += displayMart(parsedData[i])
+const query = `
+{
+  martialArts {
+    id
+    title
+    description
   }
+}
+`;
 
-  martsContainer.innerHTML = contents // Set Contents of DOM
+fetch("/graphql", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query }), })
+  .then(async res => {
+    const response = await res.json()
+    parsedData = response.data.martialArts
+    let martsContainer = document.getElementById("marts-container")
+    var contents = "" // All the martial arts.
 
-});
+    for (i = 0; i < parsedData.length; i++) {
+      contents += displayMart(parsedData[i])
+    }
+
+    martsContainer.innerHTML = contents // Set Contents of DOM
+
+  });
 
 
 
