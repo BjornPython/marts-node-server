@@ -2,13 +2,16 @@ const http = require("http")
 const PORT = process.env.PORT || 3000
 
 const { handleUiRequest, handleScriptRequest, handleStylesRequest, handlePageNotFound } = require("./routes/files.route.js")
-const { handleCreateRequest, handleReadRequest, handleUpdateRequest, handleDeleteRequest } = require("./routes/martial-arts.route.js")
+const { handleCreateRequest, handleReadRequest, handleUpdateRequest, handleDeleteRequest, handleGqlRequest } = require("./routes/martial-arts.route.js")
+
 
 
 const server = http.createServer(async (req, res) => {
 
+    if (req.url === "/graphql" && req.method === "POST") { handleGqlRequest(req, res) }
+
     // Route for serving html
-    if (req.url === "/martial-arts" && req.method === "GET") { handleUiRequest(req, res) }
+    else if (req.url === "/martial-arts" && req.method === "GET") { handleUiRequest(req, res) }
 
     // Route for CREATING a new martial art
     else if (req.url === "/martial-arts" && req.method === "POST") { handleCreateRequest(req, res) }
