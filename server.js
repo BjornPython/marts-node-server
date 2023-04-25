@@ -4,11 +4,6 @@ const PORT = process.env.PORT || 3000
 const { handleUiRequest, handleScriptRequest, handleStylesRequest, handlePageNotFound } = require("./routes/files.route.js")
 const { handleCreateRequest, handleReadRequest, handleUpdateRequest, handleDeleteRequest, handleGqlRequest } = require("./routes/martial-arts.route.js")
 
-const { schema } = require("./schema/type-defs.js")
-const { root } = require("./schema/resolvers.js")
-
-
-const { graphql } = require("graphql")
 
 
 const server = http.createServer(async (req, res) => {
