@@ -41,23 +41,34 @@ fetch("/graphql", { method: "POST", headers: { "Content-Type": "application/json
 
 
 
-const submitNewMart = () => { //Submit new martial art's form values.
-  const title = document.getElementById("title")
-  const description = document.getElementById("description")
+const submitNewMart = (e) => { //Submit new martial art's form values.
+  e.preventDefault()
+  const title = document.getElementById("title").value
+  const description = document.getElementById("description").value
 
-  const query = `
-  query CreateMartialArt($title: String, !description: String) {
-    createMartialArt(title: $title, description: $description)
-  }
-  `
+  // const title = "testinggg"
+  // const description = "test desc"
 
-  const body = JSON.stringify({ query, variables: { title, description } })
-  fetch("/create", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body })
-    .then(response => { if (response.status === 200) { return response.json() } }) // Add martial art to DOM if success.
+  console.log("TITLE DESC: ", title, description);
+
+  const query = `mutation CreateMartialArt($input: CreateMartialArtInput) {
+    createMartialArt(input: $input) {
+      title
+      description
+    }
+  }`
+
+  const body = JSON.stringify({ query, variables: { input: { title, description } } })
+
+  console.log("BODY: ", body);
+
+  fetch("/graphql", { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: "application/json" }, body })
+
+    .then(response => response.json()) // Add martial art to DOM if success.
     .then(data => {
       console.log("DATA: ", data);
-      let martsContainer = document.getElementById("marts-container")
-      martsContainer.innerHTML += displayMart(data)
+      // let martsContainer = document.getElementById("marts-container")
+      // martsContainer.innerHTML += displayMart(data)
     })
 }
 

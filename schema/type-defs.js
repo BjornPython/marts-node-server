@@ -2,7 +2,6 @@ const { buildSchema } = require("graphql")
 
 const schema = buildSchema(
     `
-
     type MartialArt {
         id: ID!
         title: String!
@@ -10,7 +9,12 @@ const schema = buildSchema(
     }
 
     input CreateMartialArtInput {
-        title: String! 
+        title: String
+        description: String
+    }
+
+    input UpdateMartialArtInput {
+        id: ID!
         description: String!
     }
 
@@ -20,7 +24,8 @@ const schema = buildSchema(
     }
 
     type Mutation {
-        createMartialArt(input: CreateMartialArtInput!): MartialArt 
+        createMartialArt(input: CreateMartialArtInput): MartialArt 
+        updateMartialArt(input: UpdateMartialArtInput): MartialArt
     }
 
 
