@@ -96,3 +96,23 @@ const saveEdit = (id) => {
     })
 
 }
+
+const sendgql = async () => {
+  console.log("EY");
+
+  const query = `
+    {
+      hello
+    }
+  `;
+
+  const response = await fetch("/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query }),
+  });
+
+  const data = await response.json();
+
+  console.log("RES: ", data);
+};
