@@ -2,32 +2,18 @@ const http = require("http")
 const PORT = process.env.PORT || 3000
 
 const { handleUiRequest, handleScriptRequest, handleStylesRequest, handlePageNotFound } = require("./routes/files.route.js")
-const { handleCreateRequest, handleReadRequest, handleUpdateRequest, handleDeleteRequest } = require("./routes/martial-arts.route.js")
+const { handleCreateRequest, handleReadRequest, handleUpdateRequest, handleDeleteRequest, handleGqlRequest } = require("./routes/martial-arts.route.js")
 
 const { schema } = require("./schema/type-defs.js")
 const { root } = require("./schema/resolvers.js")
 
-const { graphqlHTTP } = require("express-graphql")
 
-// const root = {
-//     hello: () => { console.log("IN HELLO..."); return "hello world" }
-// }
+const { graphql } = require("graphql")
+
+
 const server = http.createServer(async (req, res) => {
 
-    if (req.url === "/graphql" && req.method === "POST") {
-        console.log("IN GRAPH: ");
-        try {
-            graphqlHTTP({
-                schema: schema,
-                rootValue: { ...root },
-                graphiql: true, // Optional: Enables the GraphiQL UI for testing
-            })(req, res);
-        } catch (err) {
-            console.error(err);
-            res.statusCode = 400;
-            res.end("Bad request");
-        }
-    }
+    if (req.url === "/graphql" && req.method === "POST") { handleGqlRequest(req, res) }
 
     // Route for serving html
     else if (req.url === "/martial-arts" && req.method === "GET") { handleUiRequest(req, res) }
