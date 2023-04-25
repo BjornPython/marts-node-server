@@ -102,7 +102,11 @@ const sendgql = async () => {
 
   const query = `
     {
-      hello
+      martialArts {
+        id
+        title
+        description
+      }
     }
   `;
 
