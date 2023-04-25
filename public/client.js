@@ -66,9 +66,9 @@ const submitNewMart = (e) => { //Submit new martial art's form values.
 
     .then(response => response.json()) // Add martial art to DOM if success.
     .then(data => {
-      console.log("DATA: ", data);
-      // let martsContainer = document.getElementById("marts-container")
-      // martsContainer.innerHTML += displayMart(data)
+      const createdData = data.data.createMartialArt
+      let martsContainer = document.getElementById("marts-container")
+      martsContainer.innerHTML += displayMart(createdData)
     })
 }
 

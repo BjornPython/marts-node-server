@@ -8,11 +8,11 @@ const root = {
 
     createMartialArt: async ({ input }) => {
         const { title, description } = input
-        const res = await createMartialArt(title, description);
-        return res
+        const created = await createMartialArt(title, description);
+        return created
     },
 
-    // updateMartialArt: async ({ id, description }) => { const res = await updateDescription(id, description); return res }
+    updateMartialArt: async ({ id, description }) => { const res = await updateDescription(id, description); return res }
 
 
 
