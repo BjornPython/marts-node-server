@@ -27,8 +27,10 @@ const getAllMartialArts = async () => {
 
 // UPDATE
 const updateDescription = async (newDesc, id) => {
+    console.log("IN UPDESC");
     if (!newDesc || !id) { throw new Error("No new Description or id") }
-    const updated = await db("marts").insert({ id, description: newDesc }, ["id"]).onConflict("id").merge()
+    const updated = await db("marts").insert({ id, description: newDesc }, ["id", "title", "description"]).onConflict("id").merge()
+    console.log("UPDATED: ", updated);
     if (updated.length >= 1) { return updated[0] } else { return false } // return true if update was succesful
 }
 

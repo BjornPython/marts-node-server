@@ -17,7 +17,6 @@ const handleGqlRequest = async (req, res) => {
     })
     req.on('end', async () => {
         const { query, variables } = JSON.parse(body)
-        console.log(JSON.parse(body));
         const response = await graphql({
             schema,
             source: query,

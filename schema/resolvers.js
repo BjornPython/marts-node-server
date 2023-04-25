@@ -12,7 +12,13 @@ const root = {
         return created
     },
 
-    updateMartialArt: async ({ id, description }) => { const res = await updateDescription(id, description); return res }
+    updateMartialArt: async ({ input }) => {
+        console.log("IN UPDATE RESOLVER");
+        const { id, description } = input
+        console.log(id, description);
+        const updated = await updateDescription(description, id);
+        return updated
+    }
 
 
 

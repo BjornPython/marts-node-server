@@ -46,8 +46,6 @@ const submitNewMart = (e) => { //Submit new martial art's form values.
   const title = document.getElementById("title").value
   const description = document.getElementById("description").value
 
-  // const title = "testinggg"
-  // const description = "test desc"
 
   console.log("TITLE DESC: ", title, description);
 
@@ -112,9 +110,20 @@ const saveEdit = (id) => {
 
   if (newDesc === "") { return } // If input is empty, cancel update request
 
-  const body = JSON.stringify({ id, newDesc })
+  const query = `
+  mutation UpdateMartialArt($input: UpdateMartialArtInput) {
+    updateMartialArt(input: $input) {
+      id
+      title
+      description
+    }
+  }
+  `
 
-  fetch("/update", { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body }) // Call server to update
+
+  const body = JSON.stringify({ query, variables: { input: { id, description: newDesc } } })
+
+  fetch("/graphql", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }) // Call server to update
     .then(response => {
       if (response.status = 200) {
         // edit new mart
