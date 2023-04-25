@@ -11,7 +11,7 @@ const db = knex({
 const createMartialArt = async (title, description) => {
     if (!title || !description) { throw new Error("no title or description") }
     const marts = await db("marts").insert({ title, description }, ["id"])
-    if (marts.length >= 1) { return true } else { return false } // return true if create was succesful
+    if (marts.length >= 1) { return marts[0] } else { return false } // return true if create was succesful
 }
 
 

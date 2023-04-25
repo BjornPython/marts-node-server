@@ -3,16 +3,28 @@ const { buildSchema } = require("graphql")
 const schema = buildSchema(
     `
 
-    type martialArt {
+    type MartialArt {
         id: ID!
         title: String!
         description: String!
     }
 
+    input CreateMartialArtInput {
+        title: String! 
+        description: String!
+    }
+
     type Query {
         hello: String
-        martialArts: [martialArt]
+        martialArts: [MartialArt]
     }
+
+    type Mutation {
+        createMartialArt(input: CreateMartialArtInput!): MartialArt 
+    }
+
+
+
 `
 )
 

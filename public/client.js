@@ -44,10 +44,18 @@ fetch("/graphql", { method: "POST", headers: { "Content-Type": "application/json
 const submitNewMart = () => { //Submit new martial art's form values.
   const title = document.getElementById("title")
   const description = document.getElementById("description")
-  const body = JSON.stringify({ title: title.value, description: description.value })
+
+  const query = `
+  query CreateMartialArt($title: String, !description: String) {
+    createMartialArt(title: $title, description: $description)
+  }
+  `
+
+  const body = JSON.stringify({ query, variables: { title, description } })
   fetch("/create", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body })
     .then(response => { if (response.status === 200) { return response.json() } }) // Add martial art to DOM if success.
     .then(data => {
+      console.log("DATA: ", data);
       let martsContainer = document.getElementById("marts-container")
       martsContainer.innerHTML += displayMart(data)
     })
