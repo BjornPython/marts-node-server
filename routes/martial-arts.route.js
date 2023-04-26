@@ -16,10 +16,11 @@ const handleGqlRequest = async (req, res) => {
         body += chunk.toString()
     })
     req.on('end', async () => {
-        const { query } = JSON.parse(body)
+        const { query, variables } = JSON.parse(body)
         const response = await graphql({
             schema,
             source: query,
+            variableValues: variables,
             rootValue: { ...root },
         })
         res.writeHead(200, { "Content-Type": "text/html" })

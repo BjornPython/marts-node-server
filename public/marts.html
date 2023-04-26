@@ -10,13 +10,12 @@
 </head>
 
 <body>
-  <form action="/martial-arts" method="POST">
+  <form>
     <input type="text" name="title" placeholder="title" id="title">
     <input type="text" name="description" placeholder="description" id="description">
-    <button type="submit">Add new Martial Art</button>
+    <button type="button" onclick="submitNewMart(event)">Add new Martial Art</button>
   </form>
 
-  <button onclick="sendgql()">HELLO</button>
 
   <div id="marts-container">
 

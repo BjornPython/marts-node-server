@@ -14,38 +14,71 @@ const displayMart = (data) => { // Returns a div that displays the martial art.
 }
 
 // Fetches and displays the Initial data.
-fetch("/data").then(response => response.json()).then(data => {
-  const parsedData = data
-  let martsContainer = document.getElementById("marts-container")
-  var contents = "" // All the martial arts.
-
-  for (i = 0; i < parsedData.length; i++) {
-    contents += displayMart(parsedData[i])
+const query = `
+{
+  martialArts {
+    id
+    title
+    description
   }
+}
+`;
 
-  martsContainer.innerHTML = contents // Set Contents of DOM
+fetch("/graphql", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query }), })
+  .then(async res => {
+    const response = await res.json()
+    parsedData = response.data.martialArts
+    let martsContainer = document.getElementById("marts-container")
+    var contents = "" // All the martial arts.
 
-});
+    for (i = 0; i < parsedData.length; i++) {
+      contents += displayMart(parsedData[i])
+    }
+
+    martsContainer.innerHTML = contents // Set Contents of DOM
+
+  });
 
 
 
-const submitNewMart = () => { //Submit new martial art's form values.
-  const title = document.getElementById("title")
-  const description = document.getElementById("description")
-  const body = JSON.stringify({ title: title.value, description: description.value })
-  fetch("/create", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body })
-    .then(response => { if (response.status === 200) { return response.json() } }) // Add martial art to DOM if success.
+const submitNewMart = (e) => { //Submit new martial art's form values.
+  e.preventDefault()
+  const title = document.getElementById("title").value
+  const description = document.getElementById("description").value
+
+  const query = `mutation CreateMartialArt($input: CreateMartialArtInput) {
+    createMartialArt(input: $input) {
+      title
+      description
+    }
+  }`
+
+  const body = JSON.stringify({ query, variables: { input: { title, description } } })
+
+
+  fetch("/graphql", { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: "application/json" }, body })
+    .then(response => response.json()) // Add martial art to DOM if success.
     .then(data => {
+      const createdData = data.data.createMartialArt
       let martsContainer = document.getElementById("marts-container")
-      martsContainer.innerHTML += displayMart(data)
+      martsContainer.innerHTML += displayMart(createdData)
     })
 }
 
 
 
 const removeMart = (id) => { // Requests a DELETE request to server
-  const body = JSON.stringify({ id })
-  fetch("/delete", { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body })
+
+  const query = `
+  mutation DeleteMartialArt($input: DeleteMartialArtInput) {
+    deleteMartialArt(input: $input) {
+      id
+    }
+  }
+  `
+  const body = JSON.stringify({ query, variables: { input: { id } } })
+
+  fetch("/graphql", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body })
     .then(response => {
       if (response.status = 200) {
         // delete mart from DOM if success
@@ -81,9 +114,20 @@ const saveEdit = (id) => {
 
   if (newDesc === "") { return } // If input is empty, cancel update request
 
-  const body = JSON.stringify({ id, newDesc })
+  const query = `
+  mutation UpdateMartialArt($input: UpdateMartialArtInput) {
+    updateMartialArt(input: $input) {
+      id
+      title
+      description
+    }
+  }
+  `
 
-  fetch("/update", { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body }) // Call server to update
+
+  const body = JSON.stringify({ query, variables: { input: { id, description: newDesc } } })
+
+  fetch("/graphql", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }) // Call server to update
     .then(response => {
       if (response.status = 200) {
         // edit new mart
@@ -97,22 +141,3 @@ const saveEdit = (id) => {
 
 }
 
-const sendgql = async () => {
-  console.log("EY");
-
-  const query = `
-    {
-      hello
-    }
-  `;
-
-  const response = await fetch("/graphql", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query }),
-  });
-
-  const data = await response.json();
-
-  console.log("RES: ", data);
-};
