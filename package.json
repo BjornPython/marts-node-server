@@ -11,12 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.22",
-    "prisma": "^4.13.0"
+    "nodemon": "^2.0.22"
   },
   "dependencies": {
     "@prisma/client": "^4.13.0",
     "graphql": "^15.8.0",
+    "prisma": "^4.13.0",
     "sqlite3": "^5.1.6"
   }
 }
