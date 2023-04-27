@@ -13,9 +13,7 @@ const db = knex({
 // ADD A MARTIAL ART
 const createMartialArt = async (title, description) => {
     if (!title || !description) { throw new Error("no title or description") }
-
     const createdMart = await prisma.marts.create({ data: { title, description } })
-    console.log("RES: ", createdMart);
     if (createdMart) { return createdMart } else { return false } // return true if create was succesful
 }
 
@@ -31,8 +29,15 @@ const getAllMartialArts = async () => {
 // UPDATE
 const updateDescription = async (newDesc, id) => {
     if (!newDesc || !id) { throw new Error("No new Description or id") }
-    const updated = await db("marts").insert({ id, description: newDesc }, ["id", "title", "description"]).onConflict("id").merge()
-    if (updated.length >= 1) { return updated[0] } else { return false } // return true if update was succesful
+    const updatedMart = await prisma.marts.update({
+        where: {
+            id: parseInt(id)
+        },
+        data: {
+            description: newDesc
+        }
+    })
+    if (updatedMart) { return updatedMart } else { return false } // return true if update was succesful
 }
 
 

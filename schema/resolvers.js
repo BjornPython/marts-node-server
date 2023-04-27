@@ -14,7 +14,6 @@ const root = {
 
     updateMartialArt: async ({ input }) => {
         const { id, description } = input
-        console.log(id, description);
         const updated = await updateDescription(description, id);
         return updated
     },
