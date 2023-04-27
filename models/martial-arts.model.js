@@ -1,3 +1,6 @@
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
+
 const knex = require("knex")
 
 // CONNECT TO MARTS DB WITH KNEX
