@@ -1,14 +1,7 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const knex = require("knex")
 
-// CONNECT TO MARTS DB WITH KNEX
-const db = knex({
-    client: "sqlite3",
-    connection: { filename: "./marts.db" },
-    useNullAsDefault: true
-})
 
 // ADD A MARTIAL ART
 const createMartialArt = async (title, description) => {
