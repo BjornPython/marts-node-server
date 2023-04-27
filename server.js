@@ -13,8 +13,6 @@ const server = http.createServer(async (req, res) => {
     // Route for serving html
     else if (req.url === "/martial-arts" && req.method === "GET") { handleUiRequest(req, res) }
 
-
-
     // Route for serving the client.js file
     else if (req.url === "/client.js") { handleScriptRequest(req, res) }
 
