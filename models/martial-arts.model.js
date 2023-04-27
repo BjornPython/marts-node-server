@@ -44,7 +44,11 @@ const updateDescription = async (newDesc, id) => {
 // DELETE
 const deleteMartialArt = async (id) => {
     if (!id) { throw new Error("no id") }
-    const deletedMart = await db("marts").where("id", id).del("id")
+    const deletedMart = await prisma.marts.delete({
+        where: {
+            id: parseInt(id)
+        }
+    })
     if (deletedMart) { return deletedMart } else { return false } // return true if delete was succesful
 }
 
