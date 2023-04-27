@@ -20,7 +20,7 @@ const createMartialArt = async (title, description) => {
 
 // QUERY MARTIAL ARTS
 const getAllMartialArts = async () => {
-    const martialArts = await db("marts")
+    const martialArts = await prisma.marts.findMany()
     if (martialArts) { return martialArts } else { return false } // return true if query was succesful
 }
 
