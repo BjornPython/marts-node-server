@@ -13,8 +13,10 @@ const db = knex({
 // ADD A MARTIAL ART
 const createMartialArt = async (title, description) => {
     if (!title || !description) { throw new Error("no title or description") }
-    const marts = await db("marts").insert({ title, description }, ["id", "title", "description"])
-    if (marts.length >= 1) { return marts[0] } else { return false } // return true if create was succesful
+
+    const createdMart = await prisma.marts.create({ data: { title, description } })
+    console.log("RES: ", createdMart);
+    if (createdMart) { return createdMart } else { return false } // return true if create was succesful
 }
 
 
